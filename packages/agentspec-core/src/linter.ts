@@ -109,9 +109,9 @@ export function lintSpec(spec: AgentSpecFile): { valid: boolean; errors: LintIss
     for (const cap of spec.capabilities) {
       if (cap.riskLevel === 'critical' || cap.riskLevel === 'high') {
         const hasBoundary = spec.boundaries?.some(
-          (b) => b.type === cap.category || b.type === 'access_control'
+          (b) => b.type === cap.category
         );
-        if (!hasBoundary || !spec.boundaries?.length) {
+        if (!hasBoundary) {
           errors.push({
             code: 'HIGH_RISK_NO_BOUNDARY',
             message: `High-risk capability "${cap.id}" has no corresponding boundary`,
