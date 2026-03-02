@@ -1,0 +1,70 @@
+specVersion: "0.1.0"
+name: "frontend-team-policy"
+description: "Frontend team agent specification"
+
+inherits:
+  - engineering-division.agentspec.yaml
+
+capabilities:
+  - id: "component_development"
+    action: "develop_components"
+    scope:
+      frameworks: ["React", "Vue"]
+    constraints:
+      - "must_use_design_system"
+      - "must_be_accessible"
+
+  - id: "ui_testing"
+    action: "test_ui"
+    scope:
+      domains: ["visual", "interaction", "accessibility"]
+
+  - id: "performance_optimization"
+    action: "optimize_performance"
+    constraints:
+      - "lighthouse_score_min_90"
+
+  - id: "browser_compatibility"
+    action: "test_compatibility"
+    scope:
+      browsers: ["Chrome", "Firefox", "Safari", "Edge"]
+
+boundaries:
+  - action: "use_unsupported_dependencies"
+    constraint: "requires_approval"
+    reason: "New dependencies must be approved by team lead"
+
+  - action: "break_responsive_design"
+    constraint: "forbidden"
+    reason: "All components must be responsive"
+
+  - action: "accessibility_violation"
+    constraint: "forbidden"
+    reason: "Must meet WCAG 2.1 AA standards"
+
+obligations:
+  - id: "design_system_compliance"
+    action: "use_design_system"
+    description: "Use approved design system components"
+
+  - id: "accessibility_standards"
+    action: "follow_a11y_standards"
+    description: "Follow WCAG 2.1 AA accessibility standards"
+
+  - id: "responsive_design"
+    action: "implement_responsive"
+    description: "Implement responsive design for all screens"
+
+  - id: "performance_budget"
+    action: "respect_performance_budget"
+    description: "Keep bundle size under 200KB"
+
+  - id: "design_review"
+    action: "get_design_review"
+    description: "Get design review before deployment"
+
+metadata:
+  owner: "Frontend Tech Lead"
+  division: "Engineering"
+  team: "Frontend"
+  inheritsFrom: "engineering-division.agentspec.yaml"

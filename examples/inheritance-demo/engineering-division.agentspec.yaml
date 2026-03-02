@@ -1,0 +1,65 @@
+specVersion: "0.1.0"
+name: "engineering-division-policy"
+description: "Engineering division agent specification"
+
+inherits:
+  - company-base.agentspec.yaml
+
+capabilities:
+  - id: "code_generation"
+    action: "generate_code"
+    scope:
+      languages: ["Python", "TypeScript", "Go"]
+    constraints:
+      - "must_include_tests"
+      - "must_follow_style_guide"
+
+  - id: "code_review"
+    action: "review_code"
+    description: "Review code for quality and security"
+
+  - id: "infrastructure_management"
+    action: "manage_infrastructure"
+    scope:
+      systems: ["staging", "production"]
+    constraints:
+      - "production_changes_require_approval"
+
+  - id: "ci_cd_operations"
+    action: "manage_ci_cd"
+    description: "Manage continuous integration/deployment"
+
+boundaries:
+  - action: "deploy_without_tests"
+    constraint: "forbidden"
+    reason: "All code must have tests before deployment"
+
+  - action: "production_deployment_unapproved"
+    constraint: "forbidden"
+    reason: "Production deployments require approval"
+
+  - action: "skip_security_checks"
+    constraint: "forbidden"
+    reason: "Security checks cannot be skipped"
+
+obligations:
+  - id: "code_quality"
+    action: "maintain_code_quality"
+    description: "Maintain code quality standards"
+
+  - id: "test_coverage"
+    action: "achieve_test_coverage"
+    description: "Achieve 80% test coverage minimum"
+
+  - id: "security_review"
+    action: "perform_security_review"
+    description: "Review code for security issues"
+
+  - id: "documentation"
+    action: "document_code"
+    description: "Document all public APIs"
+
+metadata:
+  owner: "Engineering Lead"
+  division: "Engineering"
+  inheritsFrom: "company-base.agentspec.yaml"

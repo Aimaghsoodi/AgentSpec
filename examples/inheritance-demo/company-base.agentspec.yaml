@@ -1,0 +1,48 @@
+specVersion: "0.1.0"
+name: "company-base-policy"
+description: "Organization-wide agent specification"
+
+capabilities:
+  - id: "basic_operations"
+    action: "execute_operation"
+    description: "Basic operations all agents can do"
+
+  - id: "internal_communication"
+    action: "communicate"
+    scope:
+      domains: ["internal", "team"]
+
+boundaries:
+  - action: "access_customer_data"
+    constraint: "requires_authorization"
+    reason: "All customer data access must be authorized"
+
+  - action: "external_communication"
+    constraint: "requires_audit"
+    reason: "External communication must be auditable"
+
+  - action: "modify_core_systems"
+    constraint: "forbidden"
+    reason: "Core systems protected at company level"
+
+obligations:
+  - id: "security_compliance"
+    action: "comply_with_standards"
+    description: "Follow company security standards"
+
+  - id: "data_privacy"
+    action: "protect_data"
+    description: "Protect customer and company data"
+
+  - id: "audit_trail"
+    action: "create_audit_log"
+    description: "Maintain audit trail of operations"
+
+  - id: "compliance_check"
+    action: "verify_compliance"
+    description: "Verify compliance before sensitive operations"
+
+metadata:
+  owner: "Chief Security Officer"
+  lastUpdated: "2024-03-01"
+  appliesTo: "all_agents"

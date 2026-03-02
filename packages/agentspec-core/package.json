@@ -1,0 +1,48 @@
+{
+  "name": "@agentspec/core",
+  "version": "0.1.0",
+  "description": "AgentSpec core library — declarative AI agent behavior contracts",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "safety",
+    "guardrails",
+    "permissions",
+    "behavior",
+    "contracts",
+    "mcp",
+    "llm"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "ajv": "^8.12.0",
+    "js-yaml": "^4.1.0",
+    "nanoid": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0",
+    "eslint": "^8.50.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0"
+  }
+}

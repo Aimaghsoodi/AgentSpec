@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://agentspec.io/schema/agentspec.schema.json",
+  "title": "AgentSpec Document Schema",
+  "description": "Complete schema for an AgentSpec document defining agent capabilities, boundaries, obligations, and verification",
+  "type": "object",
+  "required": ["apiVersion", "kind", "metadata", "spec"],
+  "additionalProperties": false,
+  "properties": {
+    "apiVersion": {
+      "type": "string",
+      "enum": ["agentspec.io/v1"],
+      "description": "API version of this AgentSpec document"
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["AgentSpec"],
+      "description": "Kind is always 'AgentSpec'"
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z0-9]([a-z0-9-]*[a-z0-9])?$",
+          "minLength": 1,
+          "maxLength": 63,
+          "description": "Unique name for this spec (DNS subdomain format)"
+        },
+        "namespace": {
+          "type": "string",
+          "pattern": "^[a-z0-9]([a-z0-9-]*[a-z0-9])?$",
+          "minLength": 1,
+          "maxLength": 63,
+          "default": "default",
+          "description": "Namespace for organizational scope"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+          "default": "0.1.0",
+          "description": "Semantic version of this spec document"
+        },
+        "author": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Creator or owner of this spec"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp of creation"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description of this agent's purpose and constraints"
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Optional labels for organizational purposes"
+        }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "$ref": "capability.schema.json"
+          },
+          "description": "Capabilities granted to the agent"
+        },
+        "boundaries": {
+          "type": "array",
+          "items": {
+            "$ref": "boundary.schema.json"
+          },
+          "description": "Boundaries constraining what the agent cannot do"
+        },
+        "obligations": {
+          "type": "array",
+          "items": {
+            "$ref": "obligation.schema.json"
+          },
+          "description": "Obligations defining what the agent must do"
+        },
+        "verification": {
+          "type": "array",
+          "items": {
+            "$ref": "verification.schema.json"
+          },
+          "description": "Verification rules for testing spec compliance"
+        }
+      }
+    },
+    "inherits_from": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "description": "List of parent spec files to inherit from (depth-first, left-to-right resolution)"
+    }
+  }
+}

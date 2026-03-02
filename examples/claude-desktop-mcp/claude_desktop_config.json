@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "agentspec": {
+      "command": "agentspec-mcp",
+      "env": {
+        "AGENTSPEC_SPECS_DIR": "~/.agentspec/specs"
+      }
+    }
+  }
+}

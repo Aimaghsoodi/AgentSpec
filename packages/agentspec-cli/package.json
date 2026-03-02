@@ -1,0 +1,30 @@
+{
+  "name": "agentspec-cli",
+  "version": "0.1.0",
+  "description": "AgentSpec CLI — manage agent capability, boundary, and obligation specifications",
+  "bin": {
+    "agentspec": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs --dts --shebang",
+    "dev": "tsx src/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^12.0.0",
+    "chalk": "^5.3.0",
+    "cli-table3": "^0.6.0",
+    "boxen": "^7.0.0",
+    "inquirer": "^9.0.0",
+    "yaml": "^2.3.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0",
+    "@types/node": "^20.0.0"
+  }
+}
