@@ -6,7 +6,7 @@
     "agentspec": "dist/index.js"
   },
   "scripts": {
-    "build": "tsup src/index.ts --format cjs --dts --shebang",
+    "build": "tsup src/index.ts --format cjs --dts",
     "dev": "tsx src/index.ts",
     "test": "vitest run",
     "test:watch": "vitest"
