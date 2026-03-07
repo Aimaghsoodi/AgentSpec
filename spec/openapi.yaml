@@ -1,0 +1,541 @@
+openapi: 3.1.0
+info:
+  title: AgentSpec API
+  description: |
+    AgentSpec — Declarative Agent Behavior Contracts.
+
+    Define, validate, lint, diff, and enforce AI agent behavior specifications.
+    This API powers ChatGPT Custom GPT Actions and other integrations.
+  version: 0.1.0
+  contact:
+    name: AgentSpec
+    url: https://github.com/Aimaghsoodi/AgentSpec
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.agentspec.org/v1
+    description: Production API
+
+tags:
+  - name: Specs
+    description: Parse, validate, and manage AgentSpec files
+  - name: Lint
+    description: Static analysis and quality scoring
+  - name: Diff
+    description: Compare two spec versions
+  - name: Enforce
+    description: Runtime enforcement and violation checking
+
+paths:
+  /specs/validate:
+    post:
+      operationId: validateSpec
+      summary: Validate an AgentSpec file
+      description: Validates an AgentSpec document against the schema. Returns errors and warnings.
+      tags: [Specs]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgentSpecInput"
+          application/x-yaml:
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationResult"
+
+  /specs/parse:
+    post:
+      operationId: parseSpec
+      summary: Parse a spec from JSON or YAML
+      description: Parses and normalizes an AgentSpec document, auto-detecting format.
+      tags: [Specs]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [content]
+              properties:
+                content:
+                  type: string
+                  description: Raw spec content (JSON or YAML)
+                format:
+                  type: string
+                  enum: [json, yaml]
+                  description: Format hint (auto-detected if omitted)
+      responses:
+        "200":
+          description: Parsed spec
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgentSpecFile"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+
+  /lint:
+    post:
+      operationId: lintSpec
+      summary: Lint an AgentSpec file
+      description: Performs static analysis including security, performance, and documentation checks.
+      tags: [Lint]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgentSpecInput"
+      responses:
+        "200":
+          description: Lint result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LintResult"
+
+  /lint/security:
+    post:
+      operationId: lintSecurity
+      summary: Security-focused lint check
+      description: Checks for critical capabilities, disabled audit logs, and security gaps.
+      tags: [Lint]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgentSpecInput"
+      responses:
+        "200":
+          description: Security lint issues
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  issues:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/LintIssue"
+
+  /diff:
+    post:
+      operationId: diffSpecs
+      summary: Diff two AgentSpec files
+      description: Compares source and target specs. Identifies breaking and non-breaking changes.
+      tags: [Diff]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [source, target]
+              properties:
+                source:
+                  $ref: "#/components/schemas/AgentSpecInput"
+                target:
+                  $ref: "#/components/schemas/AgentSpecInput"
+      responses:
+        "200":
+          description: Diff result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiffResult"
+
+  /enforce/check:
+    post:
+      operationId: enforceCheck
+      summary: Enforce a spec against a request
+      description: Checks capabilities, boundaries, and obligations for a given request context.
+      tags: [Enforce]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [spec, context]
+              properties:
+                spec:
+                  $ref: "#/components/schemas/AgentSpecInput"
+                context:
+                  $ref: "#/components/schemas/RequestContext"
+      responses:
+        "200":
+          description: Enforcement result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EnforcementResult"
+
+components:
+  schemas:
+    AgentSpecInput:
+      type: object
+      required: [version, capabilities, boundaries]
+      properties:
+        version:
+          type: string
+        agent:
+          $ref: "#/components/schemas/AgentMetadata"
+        capabilities:
+          type: array
+          items:
+            $ref: "#/components/schemas/Capability"
+        boundaries:
+          type: array
+          items:
+            $ref: "#/components/schemas/Boundary"
+        obligations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Obligation"
+        escalationRules:
+          type: array
+          items:
+            $ref: "#/components/schemas/EscalationRule"
+        verification:
+          type: object
+        audit:
+          type: object
+        tests:
+          type: array
+          items:
+            type: object
+
+    AgentSpecFile:
+      allOf:
+        - $ref: "#/components/schemas/AgentSpecInput"
+
+    AgentMetadata:
+      type: object
+      required: [id, name]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Capability:
+      type: object
+      required: [id, name]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        enabled:
+          type: boolean
+          default: true
+        riskLevel:
+          type: string
+          enum: [critical, high, medium, low, minimal]
+        scope:
+          type: object
+          properties:
+            domains:
+              type: array
+              items:
+                type: string
+            resources:
+              type: array
+              items:
+                type: string
+            maxTokens:
+              type: integer
+        constraints:
+          type: array
+          items:
+            type: string
+        rateLimit:
+          type: object
+          properties:
+            maxCalls:
+              type: integer
+            windowSeconds:
+              type: integer
+        requiresApproval:
+          type: boolean
+        priority:
+          type: integer
+
+    Boundary:
+      type: object
+      required: [id, name, type]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+        enabled:
+          type: boolean
+          default: true
+        condition:
+          type: object
+          description: Condition expression
+        actions:
+          type: array
+          items:
+            type: string
+        priority:
+          type: integer
+        enforcement:
+          type: string
+          enum: [block, warn, log, escalate]
+        severity:
+          type: string
+          enum: [critical, high, medium, low]
+        message:
+          type: string
+
+    Obligation:
+      type: object
+      required: [id, description]
+      properties:
+        id:
+          type: string
+        description:
+          type: string
+        trigger:
+          type: object
+        action:
+          type: string
+        priority:
+          type: integer
+        enforcement:
+          type: string
+          enum: [pre_response, post_response, always]
+
+    EscalationRule:
+      type: object
+      required: [id, description]
+      properties:
+        id:
+          type: string
+        description:
+          type: string
+        trigger:
+          type: object
+        escalateTo:
+          type: string
+        action:
+          type: string
+          enum: [pause_and_notify, notify_and_continue, block_and_notify]
+        timeout:
+          type: integer
+        message:
+          type: string
+
+    RequestContext:
+      type: object
+      required: [agentId, action, input]
+      properties:
+        agentId:
+          type: string
+        action:
+          type: string
+        resource:
+          type: string
+        input:
+          description: Input data for the action
+        metadata:
+          type: object
+          additionalProperties: true
+
+    ValidationResult:
+      type: object
+      properties:
+        valid:
+          type: boolean
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationError"
+        warnings:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationWarning"
+
+    ValidationError:
+      type: object
+      properties:
+        path:
+          type: string
+        message:
+          type: string
+        code:
+          type: string
+
+    ValidationWarning:
+      type: object
+      properties:
+        path:
+          type: string
+        message:
+          type: string
+        code:
+          type: string
+
+    LintResult:
+      type: object
+      properties:
+        valid:
+          type: boolean
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/LintIssue"
+        warnings:
+          type: array
+          items:
+            $ref: "#/components/schemas/LintIssue"
+        suggestions:
+          type: array
+          items:
+            $ref: "#/components/schemas/LintIssue"
+        score:
+          type: integer
+          minimum: 0
+          maximum: 100
+
+    LintIssue:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        location:
+          type: string
+        severity:
+          type: string
+          enum: [error, warning, suggestion]
+        fix:
+          type: string
+
+    DiffResult:
+      type: object
+      properties:
+        changes:
+          type: array
+          items:
+            $ref: "#/components/schemas/DiffChange"
+        summary:
+          $ref: "#/components/schemas/DiffSummary"
+
+    DiffChange:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [added, removed, modified]
+        path:
+          type: array
+          items:
+            type: string
+        oldValue: {}
+        newValue: {}
+        severity:
+          type: string
+          enum: [breaking, non-breaking]
+
+    DiffSummary:
+      type: object
+      properties:
+        totalChanges:
+          type: integer
+        additions:
+          type: integer
+        removals:
+          type: integer
+        modifications:
+          type: integer
+        breakingChanges:
+          type: integer
+        nonBreakingChanges:
+          type: integer
+
+    EnforcementResult:
+      type: object
+      properties:
+        allowed:
+          type: boolean
+        violations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Violation"
+
+    Violation:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - boundary_violation
+            - capability_limit_exceeded
+            - obligation_not_met
+            - pii_detected
+            - sentiment_violation
+            - topic_violation
+            - rate_limit_exceeded
+            - custom_violation
+        severity:
+          type: string
+          enum: [info, warning, error, critical]
+        message:
+          type: string
+        failedCheck:
+          type: string
+        remediation:
+          type: string
+        action:
+          type: string
+          enum: [block, alert, log, redact]
+        enforced:
+          type: boolean
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+
+  responses:
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
