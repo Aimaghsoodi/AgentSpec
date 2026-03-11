@@ -1697,6 +1697,112 @@
     }
 
     /* =========================================================
+       STATS COUNTER SECTION
+       ========================================================= */
+    .stats {
+      background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stats::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(16, 185, 129, 0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .stats__header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .stats__header .section-subtitle {
+      margin: 0 auto;
+    }
+
+    .stats__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat-card {
+      text-align: center;
+      padding: 36px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      transition: all 0.4s var(--ease-out-expo);
+    }
+
+    .stat-card:hover {
+      border-color: rgba(16, 185, 129, 0.25);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(16, 185, 129, 0.06);
+    }
+
+    .stat-card__icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 16px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.12);
+    }
+
+    .stat-card__icon svg {
+      width: 24px;
+      height: 24px;
+      color: var(--color-emerald);
+    }
+
+    .stat-card__value {
+      font-family: var(--font-heading);
+      font-size: 52px;
+      font-weight: 700;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+      line-height: 1;
+    }
+
+    .stat-card__label {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .stats__grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stats__grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .stat-card__value {
+        font-size: 40px;
+      }
+    }
+
+    /* =========================================================
        CTA SECTION
        ========================================================= */
     .cta {
@@ -1942,6 +2048,461 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* =========================================================
+       LANGUAGE TABS
+       ========================================================= */
+    .lang-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .lang-tab {
+      padding: 10px 24px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: rgba(12, 18, 34, 0.4);
+      border: 1px solid var(--border-card);
+      border-bottom: none;
+      border-radius: 10px 10px 0 0;
+      cursor: pointer;
+      transition: all 0.2s var(--ease-smooth);
+      position: relative;
+      margin-right: -1px;
+    }
+
+    .lang-tab:hover {
+      color: var(--text-secondary);
+      background: rgba(12, 18, 34, 0.6);
+    }
+
+    .lang-tab.active {
+      color: var(--color-emerald);
+      background: var(--bg-code);
+      border-color: var(--border-card);
+      z-index: 2;
+    }
+
+    .lang-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--bg-code);
+    }
+
+    .lang-tab-icon {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .lang-panel {
+      display: none;
+    }
+
+    .lang-panel.active {
+      display: block;
+    }
+
+    .lang-tabs + .code-block,
+    .lang-panel .code-block {
+      border-top-left-radius: 0;
+    }
+
+    /* =========================================================
+       INSTALL SECTION
+       ========================================================= */
+    .install {
+      background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
+    }
+
+    .install__header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .install__header .section-subtitle {
+      margin: 0 auto;
+    }
+
+    .install__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .install__grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .install__cmd {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-code);
+      border: 1px solid var(--border-card);
+      border-radius: 10px;
+      padding: 14px 20px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    .install__cmd-prompt {
+      color: var(--color-emerald);
+      user-select: none;
+    }
+
+    .install__cmd-text {
+      color: var(--text-primary);
+      flex: 1;
+    }
+
+    .install__cmd-copy {
+      color: var(--text-muted);
+      padding: 4px;
+      transition: color 0.2s var(--ease-smooth);
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    .install__cmd-copy:hover {
+      color: var(--text-primary);
+    }
+
+    .install__cmd-copy svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .install__code-wrapper {
+      position: relative;
+    }
+
+    .install__code-wrapper .code-block {
+      border-radius: 0 16px 16px 16px;
+    }
+
+    /* =========================================================
+       INTEGRATIONS SECTION
+       ========================================================= */
+    .integrations__header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .integrations__header .section-subtitle {
+      margin: 0 auto;
+    }
+
+    .integrations__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .integration-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s var(--ease-smooth);
+    }
+
+    .integration-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      opacity: 0;
+      transition: opacity 0.3s var(--ease-smooth);
+    }
+
+    .integration-card:hover::before {
+      opacity: 1;
+    }
+
+    .integration-card:hover {
+      border-color: rgba(16, 185, 129, 0.2);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .integration-card--crewai::before {
+      background: linear-gradient(90deg, #f59e0b, #ef4444);
+    }
+
+    .integration-card--langchain::before {
+      background: linear-gradient(90deg, #10b981, #3b82f6);
+    }
+
+    .integration-card--openai::before {
+      background: linear-gradient(90deg, #10b981, #000);
+    }
+
+    .integration-card__header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .integration-card__icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 24px;
+    }
+
+    .integration-card__icon--crewai {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.15);
+      color: var(--color-amber);
+    }
+
+    .integration-card__icon--langchain {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      color: var(--color-emerald);
+    }
+
+    .integration-card__icon--openai {
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.15);
+      color: var(--color-violet);
+    }
+
+    .integration-card__icon svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .integration-card__name {
+      font-family: var(--font-heading);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .integration-card__desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .integration-card__code {
+      background: var(--bg-code);
+      border: 1px solid rgba(148, 163, 184, 0.08);
+      border-radius: 10px;
+      padding: 16px 20px;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      line-height: 1.8;
+      overflow-x: auto;
+    }
+
+    /* =========================================================
+       PLATFORMS SECTION (ChatGPT / Claude)
+       ========================================================= */
+    .platforms {
+      background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
+    }
+
+    .platforms__header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .platforms__header .section-subtitle {
+      margin: 0 auto;
+    }
+
+    .platforms__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    @media (max-width: 800px) {
+      .platforms__grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .platform-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s var(--ease-smooth);
+    }
+
+    .platform-card:hover {
+      border-color: rgba(16, 185, 129, 0.2);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .platform-card__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 100px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .platform-card__badge--chatgpt {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--color-emerald);
+      border: 1px solid rgba(16, 185, 129, 0.15);
+    }
+
+    .platform-card__badge--claude {
+      background: rgba(139, 92, 246, 0.1);
+      color: var(--color-violet);
+      border: 1px solid rgba(139, 92, 246, 0.15);
+    }
+
+    .platform-card__title {
+      font-family: var(--font-heading);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .platform-card__desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .platform-card__steps {
+      list-style: none;
+      margin-bottom: 20px;
+    }
+
+    .platform-card__steps li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 0;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .platform-card__step-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .platform-card__step-num--chatgpt {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      color: var(--color-emerald);
+    }
+
+    .platform-card__step-num--claude {
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      color: var(--color-violet);
+    }
+
+    .platform-card__code {
+      background: var(--bg-code);
+      border: 1px solid rgba(148, 163, 184, 0.08);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      line-height: 1.7;
+      overflow-x: auto;
+    }
+
+    .platform-card__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-emerald);
+      margin-top: 16px;
+      transition: gap 0.2s var(--ease-smooth);
+    }
+
+    .platform-card__link:hover {
+      gap: 10px;
+    }
+
+    .platform-card__link svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Python syntax highlighting */
+    .py .kw { color: #c084fc; }
+    .py .fn { color: #60a5fa; }
+    .py .str { color: #fbbf24; }
+    .py .cmt { color: #64748b; font-style: italic; }
+    .py .var { color: #f8fafc; }
+    .py .op { color: #94a3b8; }
+    .py .num { color: #c084fc; }
+    .py .cls { color: #10b981; }
+    .py .imp { color: #c084fc; }
+    .py .from { color: #c084fc; }
+    .py .mod { color: #10b981; }
+
+    /* TypeScript syntax highlighting */
+    .ts .kw { color: #c084fc; }
+    .ts .fn { color: #60a5fa; }
+    .ts .str { color: #fbbf24; }
+    .ts .cmt { color: #64748b; font-style: italic; }
+    .ts .var { color: #f8fafc; }
+    .ts .op { color: #94a3b8; }
+    .ts .num { color: #c084fc; }
+    .ts .type { color: #10b981; }
   </style>
 </head>
 <body>
@@ -1980,6 +2541,8 @@
       <li><a href="#problem" class="nav__link">Problem</a></li>
       <li><a href="#syntax" class="nav__link">Syntax</a></li>
       <li><a href="#enforcement" class="nav__link">Enforcement</a></li>
+      <li><a href="#install" class="nav__link">Install</a></li>
+      <li><a href="#integrations" class="nav__link">Integrations</a></li>
       <li><a href="#usecases" class="nav__link">Use Cases</a></li>
     </ul>
 
@@ -2007,6 +2570,8 @@
     <a href="#problem" class="mobile-menu__link" data-close-menu>Problem</a>
     <a href="#syntax" class="mobile-menu__link" data-close-menu>Syntax</a>
     <a href="#enforcement" class="mobile-menu__link" data-close-menu>Enforcement</a>
+    <a href="#install" class="mobile-menu__link" data-close-menu>Install</a>
+    <a href="#integrations" class="mobile-menu__link" data-close-menu>Integrations</a>
     <a href="#usecases" class="mobile-menu__link" data-close-menu>Use Cases</a>
     <a href="https://github.com/Aimaghsoodi/AgentSpec" class="mobile-menu__link" data-close-menu>GitHub</a>
     <a href="#cta" class="btn btn--primary btn--large" data-close-menu>Read Spec</a>
@@ -2646,6 +3211,355 @@
 </section>
 
 <!-- ============================================================
+     INSTALL / QUICK START
+     ============================================================ -->
+<section class="section install" id="install">
+  <div class="container">
+    <div class="install__header reveal">
+      <span class="eyebrow">Quick Start</span>
+      <h2 class="section-headline">Up and Running in Minutes</h2>
+      <p class="section-subtitle">Install the Python package or the TypeScript SDK. Parse, validate, lint, and enforce specs with just a few lines of code.</p>
+    </div>
+
+    <div class="install__grid">
+      <!-- Python Install -->
+      <div class="reveal reveal-delay-1">
+        <div class="install__cmd">
+          <span class="install__cmd-prompt">$</span>
+          <span class="install__cmd-text">pip install agentspec</span>
+          <button class="install__cmd-copy" data-copy="pip install agentspec" aria-label="Copy install command">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          </button>
+        </div>
+
+        <div class="install__code-wrapper">
+          <div class="lang-tabs">
+            <button class="lang-tab active" data-lang="python-install">
+              <span class="lang-tab-icon">
+                <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M7.932.5c-1.88 0-3.13.82-3.13 2.33v1.71h3.18v.57H3.82C2.14 5.11.9 6.07.9 8.09c0 2.38 1.55 3.07 2.86 3.07h1.68v-1.84c0-1.55 1.35-2.9 2.9-2.9h3.12c1.32 0 2.35-.96 2.35-2.34V2.83c0-1.35-1.11-2.04-2.52-2.26A11.7 11.7 0 007.93.5zm-1.7 1.38a.87.87 0 110 1.74.87.87 0 010-1.74z"/><path d="M8.068 15.5c1.88 0 3.13-.82 3.13-2.33v-1.71H8.02v-.57h4.16c1.68 0 2.92-.96 2.92-2.98 0-2.38-1.55-3.07-2.86-3.07h-1.68v1.84c0 1.55-1.35 2.9-2.9 2.9H4.54c-1.32 0-2.35.96-2.35 2.34v1.25c0 1.35 1.11 2.04 2.52 2.26.72.11 1.5.07 2.35.07zm1.7-1.38a.87.87 0 110-1.74.87.87 0 010 1.74z"/></svg>
+                Python
+              </span>
+            </button>
+            <button class="lang-tab" data-lang="typescript-install">
+              <span class="lang-tab-icon">
+                <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><rect width="16" height="16" rx="2" fill="currentColor" opacity="0.15"/><path d="M4.8 10.3V9h5.4v1.3H8.4v5H6.6v-5H4.8zm6.2 1.2c0-.6.5-1.1 1.2-1.3.3-.1.7-.2 1.2-.2.9 0 1.6.3 1.6 1.2v2.7c0 .3 0 .6.1.8h-1.3c0-.2-.1-.3-.1-.5-.3.4-.8.6-1.3.6-.8 0-1.3-.5-1.3-1.1 0-1.1 1.1-1.3 2-.1.4 0 .6-.1.6-.4 0-.3-.2-.4-.6-.4-.4 0-.6.2-.6.4H11z"/></svg>
+                TypeScript
+              </span>
+            </button>
+          </div>
+
+          <div class="lang-panel active" data-panel="python-install">
+            <div class="code-block">
+              <div class="code-header">
+                <div class="code-header__dots">
+                  <span class="code-header__dot"></span>
+                  <span class="code-header__dot"></span>
+                  <span class="code-header__dot"></span>
+                </div>
+                <span class="code-header__filename">quickstart.py</span>
+              </div>
+              <div class="code-body"><pre><span class="code-line"><span class="py"><span class="kw">from</span> <span class="mod">agentspec</span> <span class="kw">import</span> <span class="fn">parse_spec</span>, <span class="fn">validate_spec</span>, <span class="fn">lint_spec</span>, <span class="cls">Enforcer</span>, <span class="fn">create_context</span></span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="py"><span class="cmt"># Parse and validate a spec from YAML</span></span></span>
+<span class="code-line"><span class="py"><span class="var">spec</span> <span class="op">=</span> <span class="fn">parse_spec</span><span class="op">(</span><span class="var">yaml_content</span><span class="op">)</span></span></span>
+<span class="code-line"><span class="py"><span class="var">result</span> <span class="op">=</span> <span class="fn">validate_spec</span><span class="op">(</span><span class="var">spec</span><span class="op">)</span></span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="py"><span class="cmt"># Lint for quality and best practices</span></span></span>
+<span class="code-line"><span class="py"><span class="var">lint</span> <span class="op">=</span> <span class="fn">lint_spec</span><span class="op">(</span><span class="var">spec</span><span class="op">)</span></span></span>
+<span class="code-line"><span class="py"><span class="fn">print</span><span class="op">(</span><span class="str">f"Score: </span><span class="op">{</span><span class="var">lint</span><span class="op">.</span><span class="var">score</span><span class="op">}</span><span class="str">/100"</span><span class="op">)</span></span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="py"><span class="cmt"># Runtime enforcement</span></span></span>
+<span class="code-line"><span class="py"><span class="var">enforcer</span> <span class="op">=</span> <span class="cls">Enforcer</span><span class="op">(</span><span class="var">spec</span><span class="op">)</span></span></span>
+<span class="code-line"><span class="py"><span class="var">ctx</span> <span class="op">=</span> <span class="fn">create_context</span><span class="op">(</span></span></span>
+<span class="code-line"><span class="py">    <span class="var">agent_id</span><span class="op">=</span><span class="str">"agent-1"</span><span class="op">,</span></span></span>
+<span class="code-line"><span class="py">    <span class="var">action</span><span class="op">=</span><span class="str">"read"</span><span class="op">,</span></span></span>
+<span class="code-line"><span class="py">    <span class="var">input_data</span><span class="op">=</span><span class="str">"query"</span></span></span>
+<span class="code-line"><span class="py"><span class="op">)</span></span></span>
+<span class="code-line"><span class="py"><span class="var">result</span> <span class="op">=</span> <span class="var">enforcer</span><span class="op">.</span><span class="fn">enforce</span><span class="op">(</span><span class="var">ctx</span><span class="op">)</span></span></span></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="lang-panel" data-panel="typescript-install">
+            <div class="code-block">
+              <div class="code-header">
+                <div class="code-header__dots">
+                  <span class="code-header__dot"></span>
+                  <span class="code-header__dot"></span>
+                  <span class="code-header__dot"></span>
+                </div>
+                <span class="code-header__filename">quickstart.ts</span>
+              </div>
+              <div class="code-body"><pre><span class="code-line"><span class="ts"><span class="kw">import</span> <span class="op">{</span> <span class="fn">parseSpec</span><span class="op">,</span> <span class="fn">validateSpec</span><span class="op">,</span> <span class="fn">lintSpec</span> <span class="op">}</span> <span class="kw">from</span> <span class="str">'@anthropic/agentspec-core'</span><span class="op">;</span></span></span>
+<span class="code-line"><span class="ts"><span class="kw">import</span> <span class="op">{</span> <span class="type">Enforcer</span><span class="op">,</span> <span class="fn">createContext</span> <span class="op">}</span> <span class="kw">from</span> <span class="str">'@anthropic/agentspec-sdk'</span><span class="op">;</span></span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="ts"><span class="cmt">// Parse and validate a spec from YAML</span></span></span>
+<span class="code-line"><span class="ts"><span class="kw">const</span> <span class="var">spec</span> <span class="op">=</span> <span class="fn">parseSpec</span><span class="op">(</span><span class="var">yamlContent</span><span class="op">);</span></span></span>
+<span class="code-line"><span class="ts"><span class="kw">const</span> <span class="var">result</span> <span class="op">=</span> <span class="fn">validateSpec</span><span class="op">(</span><span class="var">spec</span><span class="op">);</span></span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="ts"><span class="cmt">// Lint for quality and best practices</span></span></span>
+<span class="code-line"><span class="ts"><span class="kw">const</span> <span class="var">lint</span> <span class="op">=</span> <span class="fn">lintSpec</span><span class="op">(</span><span class="var">spec</span><span class="op">);</span></span></span>
+<span class="code-line"><span class="ts"><span class="var">console</span><span class="op">.</span><span class="fn">log</span><span class="op">(</span><span class="str">`Score: </span><span class="op">${</span><span class="var">lint</span><span class="op">.</span><span class="var">score</span><span class="op">}</span><span class="str">/100`</span><span class="op">);</span></span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="ts"><span class="cmt">// Runtime enforcement</span></span></span>
+<span class="code-line"><span class="ts"><span class="kw">const</span> <span class="var">enforcer</span> <span class="op">=</span> <span class="kw">new</span> <span class="type">Enforcer</span><span class="op">(</span><span class="var">spec</span><span class="op">);</span></span></span>
+<span class="code-line"><span class="ts"><span class="kw">const</span> <span class="var">ctx</span> <span class="op">=</span> <span class="fn">createContext</span><span class="op">({</span></span></span>
+<span class="code-line"><span class="ts">  <span class="var">agentId</span><span class="op">:</span> <span class="str">"agent-1"</span><span class="op">,</span></span></span>
+<span class="code-line"><span class="ts">  <span class="var">action</span><span class="op">:</span> <span class="str">"read"</span><span class="op">,</span></span></span>
+<span class="code-line"><span class="ts">  <span class="var">inputData</span><span class="op">:</span> <span class="str">"query"</span></span></span>
+<span class="code-line"><span class="ts"><span class="op">});</span></span></span>
+<span class="code-line"><span class="ts"><span class="kw">const</span> <span class="var">enforcement</span> <span class="op">=</span> <span class="var">enforcer</span><span class="op">.</span><span class="fn">enforce</span><span class="op">(</span><span class="var">ctx</span><span class="op">);</span></span></span></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TypeScript Install -->
+      <div class="reveal reveal-delay-2">
+        <div class="install__cmd">
+          <span class="install__cmd-prompt">$</span>
+          <span class="install__cmd-text">npm install @anthropic/agentspec-core @anthropic/agentspec-sdk</span>
+          <button class="install__cmd-copy" data-copy="npm install @anthropic/agentspec-core @anthropic/agentspec-sdk" aria-label="Copy install command">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          </button>
+        </div>
+
+        <div class="code-block" style="border-radius: 16px;">
+          <div class="code-header">
+            <div class="code-header__dots">
+              <span class="code-header__dot"></span>
+              <span class="code-header__dot"></span>
+              <span class="code-header__dot"></span>
+            </div>
+            <span class="code-header__filename">package.json (relevant fields)</span>
+          </div>
+          <div class="code-body"><pre><span class="code-line"><span class="ts"><span class="op">{</span></span></span>
+<span class="code-line"><span class="ts">  <span class="str">"dependencies"</span><span class="op">:</span> <span class="op">{</span></span></span>
+<span class="code-line"><span class="ts">    <span class="str">"@anthropic/agentspec-core"</span><span class="op">:</span> <span class="str">"^0.1.0"</span><span class="op">,</span></span></span>
+<span class="code-line"><span class="ts">    <span class="str">"@anthropic/agentspec-sdk"</span><span class="op">:</span> <span class="str">"^0.1.0"</span></span></span>
+<span class="code-line"><span class="ts">  <span class="op">}</span></span></span>
+<span class="code-line"><span class="ts"><span class="op">}</span></span></span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FRAMEWORK INTEGRATIONS
+     ============================================================ -->
+<section class="section" id="integrations">
+  <div class="container">
+    <div class="integrations__header reveal">
+      <span class="eyebrow">Ecosystem</span>
+      <h2 class="section-headline">Integrates With Your Stack</h2>
+      <p class="section-subtitle">Drop-in guards for the most popular agent frameworks. Add spec enforcement with a single import.</p>
+    </div>
+
+    <div class="integrations__grid">
+      <!-- CrewAI -->
+      <div class="integration-card integration-card--crewai reveal reveal-delay-1">
+        <div class="integration-card__header">
+          <div class="integration-card__icon integration-card__icon--crewai">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <h3 class="integration-card__name">CrewAI</h3>
+        </div>
+        <p class="integration-card__desc">Enforce AgentSpec constraints on every CrewAI agent and task. The guard wraps your crew and validates each action against the spec before execution.</p>
+        <div class="integration-card__code">
+          <code class="py"><span class="kw">from</span> <span class="mod">agentspec.integrations.crewai</span> <span class="kw">import</span> <span class="cls">AgentSpecCrewAIGuard</span>
+
+<span class="var">guard</span> <span class="op">=</span> <span class="cls">AgentSpecCrewAIGuard</span><span class="op">(</span><span class="var">spec</span><span class="op">)</span>
+<span class="var">crew</span> <span class="op">=</span> <span class="var">guard</span><span class="op">.</span><span class="fn">wrap</span><span class="op">(</span><span class="var">my_crew</span><span class="op">)</span>
+<span class="var">crew</span><span class="op">.</span><span class="fn">kickoff</span><span class="op">()</span>  <span class="cmt"># Spec-enforced</span></code>
+        </div>
+      </div>
+
+      <!-- LangChain -->
+      <div class="integration-card integration-card--langchain reveal reveal-delay-2">
+        <div class="integration-card__header">
+          <div class="integration-card__icon integration-card__icon--langchain">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <h3 class="integration-card__name">LangChain</h3>
+        </div>
+        <p class="integration-card__desc">Add AgentSpec enforcement as LangChain middleware. Works with chains, agents, and any runnable. Violations are caught before they reach the LLM.</p>
+        <div class="integration-card__code">
+          <code class="py"><span class="kw">from</span> <span class="mod">agentspec.integrations.langchain</span> <span class="kw">import</span> <span class="cls">AgentSpecLangChainGuard</span>
+
+<span class="var">guard</span> <span class="op">=</span> <span class="cls">AgentSpecLangChainGuard</span><span class="op">(</span><span class="var">spec</span><span class="op">)</span>
+<span class="var">chain</span> <span class="op">=</span> <span class="var">guard</span><span class="op">.</span><span class="fn">wrap</span><span class="op">(</span><span class="var">my_chain</span><span class="op">)</span>
+<span class="var">chain</span><span class="op">.</span><span class="fn">invoke</span><span class="op">(</span><span class="var">input</span><span class="op">)</span>  <span class="cmt"># Spec-enforced</span></code>
+        </div>
+      </div>
+
+      <!-- OpenAI -->
+      <div class="integration-card integration-card--openai reveal reveal-delay-3">
+        <div class="integration-card__header">
+          <div class="integration-card__icon integration-card__icon--openai">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <h3 class="integration-card__name">OpenAI</h3>
+        </div>
+        <p class="integration-card__desc">Wrap the OpenAI API client with spec enforcement. Every chat completion request is validated against your AgentSpec before it is sent to the model.</p>
+        <div class="integration-card__code">
+          <code class="py"><span class="kw">from</span> <span class="mod">agentspec.integrations.openai</span> <span class="kw">import</span> <span class="cls">AgentSpecOpenAIGuard</span>
+
+<span class="var">guard</span> <span class="op">=</span> <span class="cls">AgentSpecOpenAIGuard</span><span class="op">(</span><span class="var">spec</span><span class="op">,</span> <span class="var">api_key</span><span class="op">=</span><span class="str">"..."</span><span class="op">)</span>
+<span class="var">response</span> <span class="op">=</span> <span class="var">guard</span><span class="op">.</span><span class="fn">chat</span><span class="op">(</span><span class="var">messages</span><span class="op">)</span>  <span class="cmt"># Spec-enforced</span></code>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CHATGPT & CLAUDE PLATFORMS
+     ============================================================ -->
+<section class="section platforms" id="platforms">
+  <div class="container">
+    <div class="platforms__header reveal">
+      <span class="eyebrow">AI Platforms</span>
+      <h2 class="section-headline">ChatGPT Skills &amp; Claude MCP</h2>
+      <p class="section-subtitle">Connect AgentSpec to the platforms you already use. Expose your spec-governed agents via OpenAPI for ChatGPT or as MCP tools for Claude.</p>
+    </div>
+
+    <div class="platforms__grid">
+      <!-- ChatGPT -->
+      <div class="platform-card reveal reveal-delay-1">
+        <div class="platform-card__badge platform-card__badge--chatgpt">
+          <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><circle cx="8" cy="8" r="6"/></svg>
+          ChatGPT Custom GPT
+        </div>
+        <h3 class="platform-card__title">OpenAPI Actions</h3>
+        <p class="platform-card__desc">Use the AgentSpec OpenAPI specification to create ChatGPT Custom GPT Actions. Your GPT can validate, lint, and enforce specs through a standard API.</p>
+
+        <ul class="platform-card__steps">
+          <li>
+            <span class="platform-card__step-num platform-card__step-num--chatgpt">1</span>
+            Open ChatGPT, go to <strong style="color: var(--text-primary);">My GPTs</strong>, and create or edit a GPT
+          </li>
+          <li>
+            <span class="platform-card__step-num platform-card__step-num--chatgpt">2</span>
+            Under <strong style="color: var(--text-primary);">Actions</strong>, import the OpenAPI schema from <code style="font-size: 12px; color: var(--color-emerald);">spec/openapi.yaml</code>
+          </li>
+          <li>
+            <span class="platform-card__step-num platform-card__step-num--chatgpt">3</span>
+            Your GPT can now validate and enforce AgentSpec files directly in conversation
+          </li>
+        </ul>
+
+        <div class="platform-card__code">
+          <code class="yaml"><span class="cmt"># spec/openapi.yaml</span>
+<span class="key">openapi</span><span class="pnc">:</span> <span class="str">"3.1.0"</span>
+<span class="key">info</span><span class="pnc">:</span>
+  <span class="key">title</span><span class="pnc">:</span> <span class="str">"AgentSpec API"</span>
+  <span class="key">version</span><span class="pnc">:</span> <span class="str">"0.1.0"</span>
+<span class="key">paths</span><span class="pnc">:</span>
+  <span class="key">/validate</span><span class="pnc">:</span> <span class="cmt">...</span>
+  <span class="key">/lint</span><span class="pnc">:</span> <span class="cmt">...</span>
+  <span class="key">/enforce</span><span class="pnc">:</span> <span class="cmt">...</span></code>
+        </div>
+
+        <a href="https://github.com/Aimaghsoodi/AgentSpec/blob/main/spec/openapi.yaml" class="platform-card__link">
+          View OpenAPI Spec
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h10M11 6l4 4-4 4"/></svg>
+        </a>
+      </div>
+
+      <!-- Claude -->
+      <div class="platform-card reveal reveal-delay-2">
+        <div class="platform-card__badge platform-card__badge--claude">
+          <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><circle cx="8" cy="8" r="6"/></svg>
+          Claude Desktop
+        </div>
+        <h3 class="platform-card__title">MCP Integration</h3>
+        <p class="platform-card__desc">Run AgentSpec as a Model Context Protocol (MCP) server. Claude can parse, validate, lint, and enforce specs as native tools inside any conversation.</p>
+
+        <ul class="platform-card__steps">
+          <li>
+            <span class="platform-card__step-num platform-card__step-num--claude">1</span>
+            Install the MCP server package: <code style="font-size: 12px; color: var(--color-violet);">npm install @anthropic/agentspec-mcp</code>
+          </li>
+          <li>
+            <span class="platform-card__step-num platform-card__step-num--claude">2</span>
+            Add it to your <strong style="color: var(--text-primary);">Claude Desktop</strong> MCP configuration file
+          </li>
+          <li>
+            <span class="platform-card__step-num platform-card__step-num--claude">3</span>
+            Claude can now use AgentSpec tools: <code style="font-size: 12px; color: var(--color-violet);">validate</code>, <code style="font-size: 12px; color: var(--color-violet);">lint</code>, <code style="font-size: 12px; color: var(--color-violet);">enforce</code>
+          </li>
+        </ul>
+
+        <div class="platform-card__code">
+          <code class="ts"><span class="cmt">// claude_desktop_config.json</span>
+<span class="op">{</span>
+  <span class="str">"mcpServers"</span><span class="op">:</span> <span class="op">{</span>
+    <span class="str">"agentspec"</span><span class="op">:</span> <span class="op">{</span>
+      <span class="str">"command"</span><span class="op">:</span> <span class="str">"npx"</span><span class="op">,</span>
+      <span class="str">"args"</span><span class="op">:</span> <span class="op">[</span><span class="str">"@anthropic/agentspec-mcp"</span><span class="op">]</span>
+    <span class="op">}</span>
+  <span class="op">}</span>
+<span class="op">}</span></code>
+        </div>
+
+        <a href="https://github.com/Aimaghsoodi/AgentSpec" class="platform-card__link" style="color: var(--color-violet);">
+          View MCP Docs
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h10M11 6l4 4-4 4"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     STATS
+     ============================================================ -->
+<section class="section section--tight stats" id="stats">
+  <div class="container">
+    <div class="stats__header">
+      <div class="reveal">
+        <span class="eyebrow">By the Numbers</span>
+        <h2 class="section-headline">A Complete Specification<br class="hide-mobile"> <span class="gradient-text">Language</span></h2>
+      </div>
+    </div>
+
+    <div class="stats__grid">
+      <div class="stat-card reveal reveal-delay-1">
+        <div class="stat-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>
+        </div>
+        <div class="stat-card__value" data-target="16">0</div>
+        <div class="stat-card__label">Enums</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-2">
+        <div class="stat-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <div class="stat-card__value" data-target="5">0</div>
+        <div class="stat-card__label">Lint Rules</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-3">
+        <div class="stat-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <div class="stat-card__value" data-target="3">0</div>
+        <div class="stat-card__label">Framework Guards</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-4">
+        <div class="stat-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <div class="stat-card__value" data-target="2">0</div>
+        <div class="stat-card__label">SDKs</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
      CTA
      ============================================================ -->
 <section class="section cta" id="cta">
@@ -3012,6 +3926,52 @@
       }
     });
   });
+
+  // ==============================
+  // 9. STATS COUNTER ANIMATION
+  // ==============================
+  var statCounters = document.querySelectorAll('.stat-card__value[data-target]');
+
+  if (statCounters.length > 0 && 'IntersectionObserver' in window) {
+    var counterTriggered = new Set();
+
+    var counterObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting && !counterTriggered.has(entry.target)) {
+          counterTriggered.add(entry.target);
+          animateStatCounter(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    statCounters.forEach(function(counter) {
+      counterObserver.observe(counter);
+    });
+
+    function animateStatCounter(el) {
+      var target = parseInt(el.dataset.target);
+      var duration = 2000;
+      var startTime = performance.now();
+
+      function updateCounter(now) {
+        var elapsed = now - startTime;
+        var progress = Math.min(elapsed / duration, 1);
+        // ease-out quart for a satisfying deceleration
+        var eased = 1 - Math.pow(1 - progress, 4);
+        var current = Math.floor(target * eased);
+
+        el.textContent = current;
+
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        } else {
+          el.textContent = target;
+        }
+      }
+
+      requestAnimationFrame(updateCounter);
+    }
+  }
 
 })();
 </script>
