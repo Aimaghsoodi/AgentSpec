@@ -269,10 +269,87 @@ console.log(blocked.violations); // boundary violations
 
 ---
 
+## Python SDK
+
+The `agentspec` package exposes the same core ideas in Python with Pydantic models.
+
+```bash
+pip install agentspec
+```
+
+```python
+from agentspec import parse_yaml, validate_spec, lint_spec, Enforcer, create_context
+
+sample = """
+version: "1.0"
+agent:
+  id: billing-bot
+  name: Billing Bot
+  description: Handles billing questions
+capabilities:
+  - id: cap_refund
+    name: process_refund
+    description: Process refunds up to $100
+    category: billing
+    enabled: true
+    riskLevel: high
+boundaries:
+  - id: bound_no_emergency_refund
+    name: no_emergency_refund_mentions
+    description: Block urgent refund requests for manual review
+    type: billing
+    enabled: true
+    message: urgent refund
+    actions: [block, escalate]
+    priority: 1
+    enforcement: block
+"""
+
+spec = parse_yaml(sample)
+validation = validate_spec(spec.model_dump(by_alias=True))
+lint = lint_spec(spec)
+enforcer = Enforcer(spec)
+
+allowed = enforcer.enforce(create_context(
+    agent_id="agent-1",
+    action="process_refund",
+    input_data="routine review",
+))
+
+blocked = enforcer.enforce(create_context(
+    agent_id="agent-1",
+    action="archive_receipt",
+    input_data="urgent refund request",
+))
+
+print(type(spec).__name__)
+print(f"validation.valid={validation.valid}")
+print(f"lint.score={lint.score}")
+print(f"allowed={allowed.allowed}, violations={len(allowed.violations)}")
+print(f"blocked={blocked.allowed}, violations={len(blocked.violations)}")
+print(blocked.violations[0].message)
+print(blocked.violations[1].message)
+```
+
+Output:
+
+```text
+AgentSpecFile
+validation.valid=True
+lint.score=100
+allowed=True, violations=0
+blocked=False, violations=2
+No capability found for action: archive_receipt
+Boundary violated: no_emergency_refund_mentions
+```
+
+---
+
 ## Packages
 
 | Package | Description |
 |---------|-------------|
+| [`agentspec`](./packages/agentspec-py/) | Python package - parse, validate, lint, and enforce specs |
 | [`@agentspec/core`](./packages/agentspec-core/) | Core library — parse, validate, lint, diff, serialize specs |
 | [`@agentspec/enforcer`](./packages/agentspec-enforcer/) | Runtime enforcement — check actions against spec boundaries |
 | [`agentspec`](./packages/agentspec-cli/) | CLI tool — lint, validate, diff from the terminal |

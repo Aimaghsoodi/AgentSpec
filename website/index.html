@@ -3258,24 +3258,76 @@
                 </div>
                 <span class="code-header__filename">quickstart.py</span>
               </div>
-              <div class="code-body"><pre><span class="code-line"><span class="py"><span class="kw">from</span> <span class="mod">agentspec</span> <span class="kw">import</span> <span class="fn">parse_spec</span>, <span class="fn">validate_spec</span>, <span class="fn">lint_spec</span>, <span class="cls">Enforcer</span>, <span class="fn">create_context</span></span></span>
+              <div class="code-body"><pre><span class="code-line">from agentspec import parse_yaml, validate_spec, lint_spec, Enforcer, create_context</span>
 <span class="code-line"></span>
-<span class="code-line"><span class="py"><span class="cmt"># Parse and validate a spec from YAML</span></span></span>
-<span class="code-line"><span class="py"><span class="var">spec</span> <span class="op">=</span> <span class="fn">parse_spec</span><span class="op">(</span><span class="var">yaml_content</span><span class="op">)</span></span></span>
-<span class="code-line"><span class="py"><span class="var">result</span> <span class="op">=</span> <span class="fn">validate_spec</span><span class="op">(</span><span class="var">spec</span><span class="op">)</span></span></span>
+<span class="code-line">sample = """</span>
+<span class="code-line">version: "1.0"</span>
+<span class="code-line">agent:</span>
+<span class="code-line">  id: billing-bot</span>
+<span class="code-line">  name: Billing Bot</span>
+<span class="code-line">  description: Handles billing questions</span>
+<span class="code-line">capabilities:</span>
+<span class="code-line">  - id: cap_refund</span>
+<span class="code-line">    name: process_refund</span>
+<span class="code-line">    description: Process refunds up to $100</span>
+<span class="code-line">    category: billing</span>
+<span class="code-line">    enabled: true</span>
+<span class="code-line">    riskLevel: high</span>
+<span class="code-line">boundaries:</span>
+<span class="code-line">  - id: bound_no_emergency_refund</span>
+<span class="code-line">    name: no_emergency_refund_mentions</span>
+<span class="code-line">    description: Block urgent refund requests for manual review</span>
+<span class="code-line">    type: billing</span>
+<span class="code-line">    enabled: true</span>
+<span class="code-line">    message: urgent refund</span>
+<span class="code-line">    actions: [block, escalate]</span>
+<span class="code-line">    priority: 1</span>
+<span class="code-line">    enforcement: block</span>
+<span class="code-line">"""</span>
 <span class="code-line"></span>
-<span class="code-line"><span class="py"><span class="cmt"># Lint for quality and best practices</span></span></span>
-<span class="code-line"><span class="py"><span class="var">lint</span> <span class="op">=</span> <span class="fn">lint_spec</span><span class="op">(</span><span class="var">spec</span><span class="op">)</span></span></span>
-<span class="code-line"><span class="py"><span class="fn">print</span><span class="op">(</span><span class="str">f"Score: </span><span class="op">{</span><span class="var">lint</span><span class="op">.</span><span class="var">score</span><span class="op">}</span><span class="str">/100"</span><span class="op">)</span></span></span>
+<span class="code-line">spec = parse_yaml(sample)</span>
+<span class="code-line">validation = validate_spec(spec.model_dump(by_alias=True))</span>
+<span class="code-line">lint = lint_spec(spec)</span>
+<span class="code-line">enforcer = Enforcer(spec)</span>
 <span class="code-line"></span>
-<span class="code-line"><span class="py"><span class="cmt"># Runtime enforcement</span></span></span>
-<span class="code-line"><span class="py"><span class="var">enforcer</span> <span class="op">=</span> <span class="cls">Enforcer</span><span class="op">(</span><span class="var">spec</span><span class="op">)</span></span></span>
-<span class="code-line"><span class="py"><span class="var">ctx</span> <span class="op">=</span> <span class="fn">create_context</span><span class="op">(</span></span></span>
-<span class="code-line"><span class="py">    <span class="var">agent_id</span><span class="op">=</span><span class="str">"agent-1"</span><span class="op">,</span></span></span>
-<span class="code-line"><span class="py">    <span class="var">action</span><span class="op">=</span><span class="str">"read"</span><span class="op">,</span></span></span>
-<span class="code-line"><span class="py">    <span class="var">input_data</span><span class="op">=</span><span class="str">"query"</span></span></span>
-<span class="code-line"><span class="py"><span class="op">)</span></span></span>
-<span class="code-line"><span class="py"><span class="var">result</span> <span class="op">=</span> <span class="var">enforcer</span><span class="op">.</span><span class="fn">enforce</span><span class="op">(</span><span class="var">ctx</span><span class="op">)</span></span></span></pre>
+<span class="code-line">allowed = enforcer.enforce(create_context(</span>
+<span class="code-line">    agent_id="agent-1",</span>
+<span class="code-line">    action="process_refund",</span>
+<span class="code-line">    input_data="routine review",</span>
+<span class="code-line">))</span>
+<span class="code-line"></span>
+<span class="code-line">blocked = enforcer.enforce(create_context(</span>
+<span class="code-line">    agent_id="agent-1",</span>
+<span class="code-line">    action="archive_receipt",</span>
+<span class="code-line">    input_data="urgent refund request",</span>
+<span class="code-line">))</span>
+<span class="code-line"></span>
+<span class="code-line">print(type(spec).__name__)</span>
+<span class="code-line">print(f"validation.valid={validation.valid}")</span>
+<span class="code-line">print(f"lint.score={lint.score}")</span>
+<span class="code-line">print(f"allowed={allowed.allowed}, violations={len(allowed.violations)}")</span>
+<span class="code-line">print(f"blocked={blocked.allowed}, violations={len(blocked.violations)}")</span>
+<span class="code-line">print(blocked.violations[0].message)</span>
+<span class="code-line">print(blocked.violations[1].message)</span></pre>
+              </div>
+            </div>
+
+            <div class="code-block" style="margin-top: 18px;">
+              <div class="code-header">
+                <div class="code-header__dots">
+                  <span class="code-header__dot"></span>
+                  <span class="code-header__dot"></span>
+                  <span class="code-header__dot"></span>
+                </div>
+                <span class="code-header__filename">example-output.txt</span>
+              </div>
+              <div class="code-body"><pre><span class="code-line">AgentSpecFile</span>
+<span class="code-line">validation.valid=True</span>
+<span class="code-line">lint.score=100</span>
+<span class="code-line">allowed=True, violations=0</span>
+<span class="code-line">blocked=False, violations=2</span>
+<span class="code-line">No capability found for action: archive_receipt</span>
+<span class="code-line">Boundary violated: no_emergency_refund_mentions</span></pre>
               </div>
             </div>
           </div>
